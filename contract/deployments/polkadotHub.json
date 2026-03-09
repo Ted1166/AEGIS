@@ -1,0 +1,12 @@
+{
+  "network": "https://services.polkadothub-rpc.com/testnet",
+  "deployer": "0x9e55245FA2f44aF736764909B76fC780A34a4258",
+  "usdc": "0x3A5786F2CB62a8002544DA58F70eb23F17fdEFC5",
+  "treasury": "0x95c02D478522b1B7616f433A22B7CDcBa259CA50",
+  "oracle": "0xC7c40108FA72A9C696a277B3496025AefeBc33b6",
+  "guard": "0x0F5FAd045798b5BC1Eada8650D09fEE05D4090c5",
+  "vault": "0x5ef526DFe9474E66c439Ca8FF31526f755F7aaBd",
+  "deployedAt": "2026-03-08T23:43:47.779Z",
+  "lendingSource": "0x77D2198692c743f2D0B0d30B83310e666704Ca8A",
+  "dexSource": "0x7277eA9bb150b51b77984eDf84DaA5206be5Fb7f"
+}
