@@ -1,10 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { PageContent, PageHeader } from '../components/layout/Layout';
 import { DepositForm } from '../components/vault/DepositForm';
 import { WithdrawForm } from '../components/vault/WithdrawForm';
-import { Card, CardLabel, CardValue } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
-import { Button } from '../components/ui/Button';
+import { Card, CardLabel } from '../components/ui/Card';
 import { useVault } from '../hooks/useVault';
 import { useOracle } from '../hooks/useOracle';
 import { formatUsdc, formatBps, tierLabel, tierColor, scoreColor, parseError } from '../lib/utils';
@@ -14,17 +12,20 @@ import type { ethers } from 'ethers';
 interface VaultPageProps {
   address?: string;
   signer?: ethers.JsonRpcSigner;
+  onNavigate?: (page: string) => void;
 }
 
 type Tab = 'deposit' | 'withdraw';
 
-export function VaultPage({ address, signer }: VaultPageProps) {
-  const [tab, setTab]     = useState<Tab>('deposit');
-  const [txHash, setTxHash] = useState<string>();
+export function VaultPage({ address, signer, onNavigate }: VaultPageProps) {
+  const [tab, setTab]       = useState<Tab>('deposit');
   const [txError, setTxError] = useState<string>();
 
   const vault  = useVault(address, signer);
   const oracle = useOracle(vault.sources.map(s => s.address));
+
+  // Clear error when tab changes
+  useEffect(() => { setTxError(undefined); }, [tab]);
 
   const enrichedSources = useMemo(() =>
     vault.sources.map(src => {
@@ -35,22 +36,18 @@ export function VaultPage({ address, signer }: VaultPageProps) {
   );
 
   async function handleDeposit(amount: string) {
-    setTxHash(undefined);
     setTxError(undefined);
     try {
       await vault.deposit(amount);
-      setTxHash(vault.txHash);
     } catch (err) {
       setTxError(parseError(err));
     }
   }
 
   async function handleWithdraw(shares: string) {
-    setTxHash(undefined);
     setTxError(undefined);
     try {
       await vault.withdraw(shares);
-      setTxHash(vault.txHash);
     } catch (err) {
       setTxError(parseError(err));
     }
@@ -67,17 +64,11 @@ export function VaultPage({ address, signer }: VaultPageProps) {
         {/* Left — forms */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Tab switcher */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '4px',
-              background: 'var(--bg-elevated)',
-              padding: '4px',
-              borderRadius: 'var(--radius)',
-              border: '1px solid var(--border)',
-            }}
-          >
+          <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px',
+            background: 'var(--bg-elevated)', padding: '4px',
+            borderRadius: 'var(--radius)', border: '1px solid var(--border)',
+          }}>
             {(['deposit', 'withdraw'] as Tab[]).map(t => (
               <button
                 key={t}
@@ -88,13 +79,9 @@ export function VaultPage({ address, signer }: VaultPageProps) {
                   border: tab === t ? '1px solid var(--border-bright)' : '1px solid transparent',
                   borderRadius: 'var(--radius)',
                   color: tab === t ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 600,
-                  fontSize: '12px',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s',
+                  fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '12px',
+                  letterSpacing: '0.06em', textTransform: 'uppercase',
+                  cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
                 {t}
@@ -109,6 +96,7 @@ export function VaultPage({ address, signer }: VaultPageProps) {
               onDeposit={handleDeposit}
               loading={vault.depositing}
               connected={!!address}
+              onNavigateToFaucet={() => onNavigate?.('faucet')}
             />
           ) : (
             <WithdrawForm
@@ -120,24 +108,18 @@ export function VaultPage({ address, signer }: VaultPageProps) {
             />
           )}
 
-          {/* Tx feedback */}
-          {txHash && (
-            <div
-              style={{
-                padding: '12px',
-                background: 'var(--green-dim)',
-                border: '1px solid var(--green)',
-                borderRadius: 'var(--radius)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
+          {/* Tx feedback — watch vault.txHash directly */}
+          {vault.txHash && (
+            <div style={{
+              padding: '12px', background: 'var(--green-dim)',
+              border: '1px solid var(--green)', borderRadius: 'var(--radius)',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--green)' }}>
                 ✅ Transaction confirmed
               </span>
               <a
-                href={explorerTx(txHash)}
+                href={explorerTx(vault.txHash)}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--blue)' }}
@@ -148,17 +130,11 @@ export function VaultPage({ address, signer }: VaultPageProps) {
           )}
 
           {txError && (
-            <div
-              style={{
-                padding: '12px',
-                background: 'var(--red-dim)',
-                border: '1px solid var(--red)',
-                borderRadius: 'var(--radius)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--red)',
-              }}
-            >
+            <div style={{
+              padding: '12px', background: 'var(--red-dim)',
+              border: '1px solid var(--red)', borderRadius: 'var(--radius)',
+              fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--red)',
+            }}>
               ❌ {txError}
             </div>
           )}
@@ -169,19 +145,14 @@ export function VaultPage({ address, signer }: VaultPageProps) {
               <CardLabel style={{ marginBottom: '12px' }}>Your Position</CardLabel>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
-                  { label: 'Balance',       value: `$${formatUsdc(vault.userBalance)} USDC` },
-                  { label: 'Shares',        value: `${formatUsdc(vault.userShares, 6)}` },
-                  { label: 'Wallet USDC',   value: `$${formatUsdc(vault.usdcBalance)}` },
+                  { label: 'Balance',     value: `$${formatUsdc(vault.userBalance)} USDC` },
+                  { label: 'Shares',      value: `${formatUsdc(vault.userShares, 6)}` },
+                  { label: 'Wallet USDC', value: `$${formatUsdc(vault.usdcBalance)}` },
                 ].map(({ label, value }) => (
-                  <div
-                    key={label}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      padding: '8px 0',
-                      borderBottom: '1px solid var(--border)',
-                    }}
-                  >
+                  <div key={label} style={{
+                    display: 'flex', justifyContent: 'space-between',
+                    padding: '8px 0', borderBottom: '1px solid var(--border)',
+                  }}>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-dim)' }}>
                       {label}
                     </span>
@@ -213,17 +184,11 @@ export function VaultPage({ address, signer }: VaultPageProps) {
                 const score = src.scoreEntry;
                 const scoreNum = score ? Number(score.score) : 0;
                 return (
-                  <div
-                    key={src.address}
-                    style={{
-                      padding: '16px',
-                      background: 'var(--bg-elevated)',
-                      border: '1px solid var(--border)',
-                      borderRadius: 'var(--radius-lg)',
-                      marginBottom: '12px',
-                    }}
-                  >
-                    {/* Header */}
+                  <div key={src.address} style={{
+                    padding: '16px', background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)',
+                    marginBottom: '12px',
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '3px' }}>{src.name}</div>
@@ -239,7 +204,6 @@ export function VaultPage({ address, signer }: VaultPageProps) {
                       </div>
                     </div>
 
-                    {/* Score + stats grid */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                       {[
                         { label: 'Quality Score', value: score ? `${scoreNum}/100` : '—', color: scoreColor(scoreNum) },
@@ -249,15 +213,10 @@ export function VaultPage({ address, signer }: VaultPageProps) {
                         { label: 'Tier',          value: score ? tierLabel(score.tier) : '—', color: tierColor(score?.tier ?? 0) },
                         { label: 'Score Fresh',   value: score ? (score.fresh ? 'Yes' : 'Stale') : '—', color: score?.fresh ? 'var(--green)' : 'var(--amber)' },
                       ].map(({ label, value, color }) => (
-                        <div
-                          key={label}
-                          style={{
-                            padding: '8px',
-                            background: 'var(--bg-card)',
-                            borderRadius: 'var(--radius)',
-                            border: '1px solid var(--border)',
-                          }}
-                        >
+                        <div key={label} style={{
+                          padding: '8px', background: 'var(--bg-card)',
+                          borderRadius: 'var(--radius)', border: '1px solid var(--border)',
+                        }}>
                           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--text-dim)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                             {label}
                           </div>
@@ -273,7 +232,6 @@ export function VaultPage({ address, signer }: VaultPageProps) {
             )}
           </Card>
 
-          {/* How it works */}
           <Card>
             <CardLabel style={{ marginBottom: '12px' }}>How Aegis Works</CardLabel>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -283,16 +241,7 @@ export function VaultPage({ address, signer }: VaultPageProps) {
                 { icon: '🚨', title: 'Auto-emergency protection', desc: 'If risk thresholds breach, funds are automatically moved to the treasury safe harbor.' },
                 { icon: '📋', title: 'Weekly AI advisor report', desc: 'Plain-English summary of your earnings, rebalances, and risk outlook generated by Claude.' },
               ].map(({ icon, title, desc }) => (
-                <div
-                  key={title}
-                  style={{
-                    display: 'flex',
-                    gap: '12px',
-                    padding: '10px',
-                    background: 'var(--bg-elevated)',
-                    borderRadius: 'var(--radius)',
-                  }}
-                >
+                <div key={title} style={{ display: 'flex', gap: '12px', padding: '10px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius)' }}>
                   <span style={{ fontSize: '16px', flexShrink: 0 }}>{icon}</span>
                   <div>
                     <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '3px' }}>{title}</div>

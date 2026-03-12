@@ -7,7 +7,7 @@ import { RPC_URL } from '../config/chain';
 export interface YieldSourceInfo {
   address: string;
   name: string;
-  apy: string;       // formatted e.g. "8.00%"
+  apy: string;
   apyBps: bigint;
   tvl: bigint;
   score: number;
@@ -65,7 +65,6 @@ export function useVault(address?: string, signer?: ethers.JsonRpcSigner) {
         ]);
       }
 
-      // Fetch yield source details
       const sources: YieldSourceInfo[] = await Promise.all(
         sourceAddresses.map(async (src: string) => {
           try {
@@ -81,7 +80,7 @@ export function useVault(address?: string, signer?: ethers.JsonRpcSigner) {
               apy:   `${(Number(apyBps) / 100).toFixed(2)}%`,
               apyBps,
               tvl,
-              score: 0,   // filled by useOracle
+              score: 0,
               tier:  0,
               realYield: '—',
               inEmergency: false,
@@ -121,7 +120,6 @@ export function useVault(address?: string, signer?: ethers.JsonRpcSigner) {
     }
   }, [address]);
 
-  // Auto-refresh on mount and every 15s
   useEffect(() => {
     refresh();
     const id = setInterval(refresh, 15_000);
@@ -137,7 +135,6 @@ export function useVault(address?: string, signer?: ethers.JsonRpcSigner) {
       const vaultWrite = new ethers.Contract(ADDRESSES.vault, VAULT_ABI, signer);
       const usdcWrite  = new ethers.Contract(ADDRESSES.usdc,  USDC_ABI,  signer);
 
-      // Check allowance
       if ((state.usdcAllowance ?? 0n) < amountBn) {
         const approveTx = await usdcWrite.approve(ADDRESSES.vault, amountBn, GAS_PARAMS);
         await approveTx.wait(1, 120_000);

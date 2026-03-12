@@ -46,7 +46,7 @@ export function useOracle(sourceAddresses: string[]) {
               updatedAt:        Number(entry.updatedAt),
               tier:             Number(entry.tier),
               active:           entry.active,
-              fresh:            age < 3600, // < 1 hour
+              fresh:            age < 3600,
             } as ScoreEntry;
           } catch {
             return null;
@@ -64,7 +64,7 @@ export function useOracle(sourceAddresses: string[]) {
     } finally {
       setLoading(false);
     }
-  }, [sourceAddresses.join(',')]); // eslint-disable-line
+  }, [sourceAddresses.join(',')]);
 
   useEffect(() => {
     refresh();

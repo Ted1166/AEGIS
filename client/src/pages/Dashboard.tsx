@@ -22,7 +22,6 @@ export function Dashboard({ address, signer, onNavigate }: DashboardProps) {
   const oracle = useOracle(vault.sources.map(s => s.address));
   const guard  = useGuard(vault.sources.map(s => ({ address: s.address, name: s.name })), signer);
 
-  // Merge oracle scores into sources
   const enrichedSources = useMemo(() =>
     vault.sources.map(src => {
       const score = oracle.getScore(src.address);

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mint USDC</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  <style>
+    body { background: #0a0b0d; color: #e8eaf0; font-family: monospace; padding: 40px; }
+    button { background: #00ff87; color: #000; border: none; padding: 12px 24px; cursor: pointer; font-size: 14px; font-weight: bold; margin: 8px 4px; }
+    input { background: #151820; color: #e8eaf0; border: 1px solid #2a3040; padding: 10px; width: 400px; font-family: monospace; }
+    #log { margin-top: 20px; padding: 16px; background: #151820; border: 1px solid #2a3040; min-height: 100px; white-space: pre-wrap; font-size: 12px; }
+    .green { color: #00ff87; }
+    .red { color: #ff3d57; }
+  </style>
+</head>
+<body>
+  <h2>🛡️ Aegis — Mint MockUSDC</h2>
+  <p>Uses MetaMask to mint USDC to your connected wallet.</p>
+  <br>
+  <label>Amount (USDC): <input id="amount" value="10000" type="number" /></label>
+  <br><br>
+  <button onclick="mint()">Mint USDC to My Wallet</button>
+  <div id="log">Ready...</div>
+
+  <script>
+    const USDC = '0x3A5786F2CB62a8002544DA58F70eb23F17fdEFC5';
+    const ABI = ['function mint(address to, uint256 amount) external'];
+
+    function log(msg, cls) {
+      const el = document.getElementById('log');
+      el.innerHTML += `<span class="${cls||''}">${msg}</span>\n`;
+    }
+
+    async function mint() {
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send('eth_requestAccounts', []);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
+        const amount = document.getElementById('amount').value;
+        const amountBn = BigInt(Math.round(parseFloat(amount) * 1e6));
+
+        log(`Minting ${amount} USDC to ${address}...`);
+
+        const usdc = new ethers.Contract(USDC, ABI, signer);
+        const tx = await usdc.mint(address, amountBn, {
+          gasLimit: 500000n,
+          maxFeePerGas: 2000000000000n,
+          maxPriorityFeePerGas: 1000000000000n,
+        });
+        log(`tx: ${tx.hash}`);
+        await tx.wait();
+        log(`✅ Done! ${amount} USDC minted to ${address}`, 'green');
+      } catch(e) {
+        log(`❌ ${e.message}`, 'red');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -78,9 +78,8 @@ export function useGuard(
     } finally {
       setLoading(false);
     }
-  }, [sources.map(s => s.address).join(',')]); // eslint-disable-line
+  }, [sources.map(s => s.address).join(',')]);
 
-  // Fetch recent emergency events
   const fetchEvents = useCallback(async () => {
     try {
       const currentBlock = await readProvider.getBlockNumber();
@@ -103,11 +102,10 @@ export function useGuard(
   useEffect(() => {
     refresh();
     fetchEvents();
-    const id = setInterval(refresh, 12_000); // ~every 6 blocks
+    const id = setInterval(refresh, 12_000);
     return () => clearInterval(id);
   }, [refresh, fetchEvents]);
 
-  // Manual checkAndExecute trigger
   const triggerCheck = useCallback(async (protocol: string) => {
     if (!signer) throw new Error('Wallet not connected');
     const guardWrite = new ethers.Contract(ADDRESSES.guard, GUARD_ABI, signer);

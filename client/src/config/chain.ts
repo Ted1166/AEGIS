@@ -26,12 +26,12 @@ export const CHAIN_ID = 420420417;
 
 export const RPC_URL = 'https://services.polkadothub-rpc.com/testnet';
 
-export const EXPLORER_URL = 'https://blockscout-passet-hub.parity-testnet.parity.io';
+export const EXPLORER_URL = 'https://assethub-paseo.subscan.io';
 
 export function explorerTx(hash: string) {
-  return `${EXPLORER_URL}/tx/${hash}`;
+  return `${EXPLORER_URL}/extrinsic/${hash}`;
 }
 
 export function explorerAddress(address: string) {
-  return `${EXPLORER_URL}/address/${address}`;
+  return `${EXPLORER_URL}/account/${address}`;
 }

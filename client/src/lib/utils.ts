@@ -1,5 +1,3 @@
-// ── Number formatters ────────────────────────────────────────────────────────
-
 export function formatUsdc(raw: bigint | undefined, decimals = 2): string {
   if (raw === undefined || raw === null) return '—';
   const n = Number(raw) / 1e6;
@@ -36,14 +34,10 @@ export function parseShares(amount: string): bigint {
   return BigInt(Math.round(n * 1e6));
 }
 
-// ── Address formatters ───────────────────────────────────────────────────────
-
 export function shortAddress(address: string): string {
   if (!address) return '';
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
-
-// ── Score/tier helpers ───────────────────────────────────────────────────────
 
 export function tierLabel(tier: number): string {
   return ['Risky', 'Mixed', 'Sustainable'][tier] ?? 'Unknown';
@@ -59,8 +53,6 @@ export function scoreColor(score: number): string {
   return 'var(--red)';
 }
 
-// ── Time helpers ─────────────────────────────────────────────────────────────
-
 export function timeAgo(timestampSeconds: number): string {
   const diff = Math.floor(Date.now() / 1000) - timestampSeconds;
   if (diff < 60)  return `${diff}s ago`;
@@ -69,17 +61,13 @@ export function timeAgo(timestampSeconds: number): string {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-// ── Error helpers ────────────────────────────────────────────────────────────
-
 export function parseError(err: unknown): string {
   if (!err) return 'Unknown error';
   if (typeof err === 'string') return err;
   const e = err as any;
-  // ethers.js errors
   if (e?.reason) return e.reason;
   if (e?.shortMessage) return e.shortMessage;
   if (e?.message) {
-    // Strip long stack traces
     const msg: string = e.message;
     if (msg.includes('user rejected')) return 'Transaction rejected';
     if (msg.includes('insufficient funds')) return 'Insufficient funds for gas';
