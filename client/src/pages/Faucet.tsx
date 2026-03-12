@@ -51,7 +51,7 @@ export function Faucet({ address, signer, onConnect }: FaucetProps) {
         subtitle="Get testnet tokens to try Aegis"
       />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '800px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
 
         {/* Step 1 — PAS Gas */}
         <Card accent="blue">
@@ -85,7 +85,7 @@ export function Faucet({ address, signer, onConnect }: FaucetProps) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <a
-              href="https://faucet.polkadot.io/?parachain=1111"
+              href="https://faucet.polkadot.io"
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: 'none' }}
@@ -100,7 +100,7 @@ export function Faucet({ address, signer, onConnect }: FaucetProps) {
           </div>
         </Card>
 
-        {/* Step 2 — Mint USDC */}
+        {/* Step 2 - Mint USDC */}
         <Card accent="green">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
             <span style={{
@@ -183,7 +183,7 @@ export function Faucet({ address, signer, onConnect }: FaucetProps) {
       </div>
 
       {/* How to add Paseo Asset Hub to MetaMask */}
-      <Card style={{ maxWidth: '800px' }}>
+      <Card>
         <CardLabel style={{ marginBottom: '16px' }}>Add Paseo Asset Hub to MetaMask</CardLabel>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
           {[

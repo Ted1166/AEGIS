@@ -1,10 +1,10 @@
 # 🛡️ Aegis — AI-Guarded Stablecoin Vault on Polkadot Hub
 
-> *"$3.4 billion was stolen from DeFi in 2025. Aegis watches your savings 24/7 and pulls them to safety before you hear about the hack."*
+> *Built for the Polkadot Solidity Hackathon 2026 — an intelligent, non-custodial savings vault that watches your deposits around the clock.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Polkadot Hub](https://img.shields.io/badge/Network-Polkadot%20Hub-E6007A)](https://polkadot.network/)
-[![Built With Solidity](https://img.shields.io/badge/Solidity-0.8.28-363636?logo=solidity)](https://soliditylang.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.28-363636?logo=solidity)](https://soliditylang.org/)
 [![Hardhat](https://img.shields.io/badge/Built%20with-Hardhat-f7f700)](https://hardhat.org/)
 [![DoraHacks](https://img.shields.io/badge/Hackathon-Polkadot%20Solidity%202026-blueviolet)](https://dorahacks.io/hackathon/polkadot-solidity-hackathon/detail)
 
@@ -13,7 +13,6 @@
 ## 📌 Table of Contents
 
 - [Overview](#-overview)
-- [The Problem](#-the-problem)
 - [How Aegis Works](#-how-aegis-works)
 - [Architecture](#-architecture)
 - [Project Structure](#-project-structure)
@@ -22,7 +21,7 @@
 - [Getting Started](#-getting-started)
 - [Deployment](#-deployment)
 - [Testing](#-testing)
-- [Polkadot Hub Advantages](#-polkadot-hub-advantages)
+- [Why Polkadot Hub](#-why-polkadot-hub)
 - [Roadmap](#-roadmap)
 - [Team](#-team)
 - [License](#-license)
@@ -31,71 +30,63 @@
 
 ## 🌐 Overview
 
-**Aegis** is the first AI-guarded, consumer-grade stablecoin savings vault on Polkadot Hub. It combines:
+**Aegis** is an AI-powered, non-custodial stablecoin savings vault built on Polkadot Hub. It is designed for users who want to earn yield on their USDC without having to actively manage risk or understand the technical details of every protocol their funds are in.
 
-- A non-custodial **USDC vault** that routes deposits into yield-generating DeFi protocols
-- An **AI Yield Brain** that scores each yield source for sustainability and transparency
-- An **AI Safety Sentinel** that monitors on-chain anomalies in real-time and auto-withdraws funds to safety when threat thresholds are breached
-- A **Gasless UX** (powered by 0xGasless) so users never touch gas manually
-- A **Weekly AI Advisor** that generates a plain-English savings report for every user
+The core idea is simple: your deposits should be working for you, and an intelligent system should be watching over them — so you don't have to.
 
-Built on Polkadot Hub's EVM-compatible smart contract layer — leveraging 2-second block finality to make real-time threat response possible.
+Aegis combines three layers of intelligence:
 
----
+- A **Yield Brain** that continuously scores yield sources for quality and sustainability
+- A **Safety Sentinel** that monitors on-chain activity in real time and can move funds to safety automatically
+- A **Weekly Advisor** that generates plain-English summaries of your position, earnings, and the overall risk outlook
 
-## 🔴 The Problem
-
-| The Reality | The Number |
-|---|---|
-| DeFi exploits & hacks (H1 2025) | **$3.1 billion lost** |
-| Average time from exploit to user awareness | **4–12 minutes** |
-| Polkadot Hub block time | **2 seconds** |
-| Existing protocols with real-time AI protection | **0** |
-
-Every DeFi protocol today is built on the same assumption: audit the code, deploy it, and hope nothing goes wrong. There is no post-deployment intelligent protection layer. Users are on their own the moment a hack begins.
-
-Aegis changes the calculus. On a 2-second block chain, a threat detected at block N can result in funds withdrawn at block N+2 — before a user could even open Twitter.
-
-Beyond safety, most DeFi yield is opaque. Users have no idea if their 15% APY is sustainable real yield or token emissions inflating into worthlessness in 6 weeks. Aegis makes that visible.
+All of this runs on Polkadot Hub's EVM-compatible environment, taking full advantage of its 2-second block finality and low-cost transactions.
 
 ---
 
 ## ⚙️ How Aegis Works
 
-### For the User — It's Dead Simple
+### For the User
 
 ```
-1. Open Aegis → Answer a 5-question risk quiz
-2. Deposit USDC → AI allocates to scored yield sources
-3. Relax → Sentinel watches 24/7. Weekly reports in plain English.
-4. Sleep easy → If an anomaly fires, your funds auto-withdraw to safety.
+1. Connect wallet → Visit the Faucet tab to get testnet PAS and MockUSDC
+2. Deposit USDC  → Funds are routed to AI-scored yield sources
+3. Relax         → Sentinel monitors every block. Reports arrive weekly.
+4. Withdraw      → Redeem your shares for USDC at any time, no lockups
 ```
 
 ### Under the Hood — Three AI Layers
 
-#### 🧠 Layer 1: Yield Brain
-- Continuously reads on-chain yield data from active protocols on Polkadot Hub
-- Computes a **Yield Quality Score (0–100)** per source:
-  - `> 70` = Sustainable (real lending fees, trading revenue)
-  - `40–70` = Mixed (partially emissions-based)
-  - `< 40` = Risky (heavy emissions, inflationary, imminent decline)
-- Scores are written on-chain and used by the vault to weight allocations
+#### 🧠 Layer 1: Yield Brain (Scorer)
+Runs every 10 minutes. Reads on-chain yield data and computes a **Yield Quality Score (0–100)** per protocol:
+
+| Score Range | Tier | Meaning |
+|---|---|---|
+| 70–100 | Sustainable | Revenue from real fees and lending activity |
+| 40–69 | Mixed | Partially driven by token emissions |
+| 0–39 | Risky | Heavily emissions-based, APY may not hold |
+
+Scores are written on-chain to `YieldOracle.sol` and used by the vault to weight allocations.
 
 #### 🔍 Layer 2: Safety Sentinel
-Monitors 4 anomaly signals per protocol per block:
-- **TVL Drainage Rate** — rapid unusual outflows
-- **Oracle Price Deviation** — price feed manipulation signals
-- **Flash Loan Pattern Detection** — abnormal single-block volume spikes
-- **Access Control Anomaly** — unexpected admin function calls
+Runs on every new block (~2 seconds). Monitors 4 signals per protocol:
 
-When ≥ 2 signals breach threshold simultaneously, `AegisGuard.sol` triggers an emergency withdrawal to the `AegisTreasury.sol` safe harbor — no human intervention required.
+- **TVL Drainage** — unusual or rapid outflows from the protocol
+- **Oracle Deviation** — price feed readings diverging from expected range
+- **Flash Loan Spike** — abnormally high single-block volume
+- **Access Control Event** — unexpected admin or ownership changes
+
+When 2 or more signals breach their thresholds simultaneously, `AegisGuard.sol` triggers an emergency withdrawal to `AegisTreasury.sol` — a safe harbor contract — without any manual intervention.
 
 #### 📋 Layer 3: Weekly Advisor
-Every 7 days, an AI compiles a plain-English savings report per user:
+Runs every Sunday. Compiles a user-facing plain-English report:
+
 - Total earned, broken down by source
-- Why the AI moved (or didn't move) your funds this week
-- Risk outlook for the next 7 days
-- Protocol health summary
+- Summary of any rebalances or emergency events
+- Protocol health outlook for the coming week
+- Risk assessment of the current allocation
+
+Powered by the **Anthropic Claude API**.
 
 ---
 
@@ -104,7 +95,7 @@ Every 7 days, an AI compiles a plain-English savings report per user:
 ```
 ┌─────────────────────────────────────────────────────┐
 │                    USER INTERFACE                    │
-│         (Next.js · Wagmi · 0xGasless SDK)           │
+│              (React · Vite · ethers.js)              │
 └────────────────────────┬────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────┐
@@ -115,15 +106,15 @@ Every 7 days, an AI compiles a plain-English savings report per user:
 │  │ AegisVault  │  │  AegisGuard  │  │  Aegis     │  │
 │  │   .sol      │◄─┤    .sol      │  │ Treasury   │  │
 │  │             │  │              │  │  .sol      │  │
-│  │ Deposit /   │  │ Anomaly      │  │            │  │
-│  │ Withdraw /  │  │ Thresholds / │  │ Safe Harbor│  │
-│  │ Rebalance   │  │ Emergency    │  │ Reserve    │  │
-│  └──────┬──────┘  └──────┬───────┘  └────────────┘  │
-│         │                │                           │
-│  ┌──────▼──────┐  ┌──────▼───────┐                  │
-│  │ YieldOracle │  │  RiskMath    │                   │
-│  │   .sol      │  │  Library     │                   │
-│  └─────────────┘  └──────────────┘                   │
+│  │ Deposit /   │  │ Signal watch │  │            │  │
+│  │ Withdraw /  │  │ Emergency    │  │ Safe Harbor│  │
+│  │ Rebalance   │  │ trigger      │  │ Reserve    │  │
+│  └──────┬──────┘  └──────────────┘  └────────────┘  │
+│         │                                            │
+│  ┌──────▼──────┐                                     │
+│  │ YieldOracle │                                     │
+│  │   .sol      │                                     │
+│  └─────────────┘                                     │
 └────────────────────────┬────────────────────────────┘
                          │ on-chain reads / writes
 ┌────────────────────────▼────────────────────────────┐
@@ -131,7 +122,7 @@ Every 7 days, an AI compiles a plain-English savings report per user:
 │                  (Node.js · Off-chain)               │
 │                                                      │
 │  ┌──────────────┐ ┌─────────────┐ ┌───────────────┐ │
-│  │ Yield Brain  │ │  Sentinel   │ │ Weekly Advisor│ │
+│  │    Scorer    │ │  Sentinel   │ │ Weekly Advisor│ │
 │  │  /scorer     │ │  /sentinel  │ │  /advisor     │ │
 │  └──────────────┘ └─────────────┘ └───────────────┘ │
 └─────────────────────────────────────────────────────┘
@@ -144,79 +135,57 @@ Every 7 days, an AI compiles a plain-English savings report per user:
 ```
 aegis/
 │
-├── contracts/                        # All Solidity smart contracts
-│   ├── core/                         # Primary protocol contracts
-│   │   ├── AegisVault.sol            # Main vault: deposit, withdraw, rebalance
-│   │   ├── AegisGuard.sol            # Safety sentinel logic + emergency trigger
-│   │   └── AegisTreasury.sol         # Safe harbor reserve for emergency funds
-│   │
-│   ├── interfaces/                   # Contract interfaces (clean boundaries)
-│   │   ├── IAegisVault.sol
-│   │   ├── IAegisGuard.sol
-│   │   └── IYieldSource.sol
-│   │
-│   ├── oracles/                      # On-chain oracle & scoring contracts
-│   │   └── YieldOracle.sol           # Reads + stores AI yield quality scores
-│   │
-│   └── libraries/                    # Shared logic libraries
-│       ├── RiskMath.sol              # Anomaly threshold math
-│       └── YieldScorer.sol           # Yield quality score computation helpers
+├── contracts/                        # Solidity smart contracts
+│   ├── AegisVault.sol                # Main vault: deposit, withdraw, rebalance
+│   ├── AegisGuard.sol                # Signal monitoring + emergency trigger
+│   ├── AegisTreasury.sol             # Safe harbor reserve
+│   ├── oracles/
+│   │   └── YieldOracle.sol           # Stores AI-written yield quality scores
+│   └── mocks/
+│       └── MockUSDC.sol              # Testnet USDC token
 │
-├── ai/                               # Off-chain AI services (Node.js)
-│   ├── sentinel/                     # Safety Sentinel service
-│   │   ├── index.js                  # Entry point — listens to blocks
-│   │   └── anomaly.js                # Anomaly detection logic
-│   │
-│   ├── scorer/                       # Yield Brain service
-│   │   ├── index.js                  # Entry point — periodic scorer runner
-│   │   └── yield_quality.js          # Yield Quality Score computation
-│   │
-│   └── advisor/                      # Weekly Advisor service
-│       ├── index.js                  # Entry point — weekly cron trigger
-│       └── report_generator.js       # Claude API call → plain-English report
+├── ai/                               # Off-chain AI services
+│   ├── sentinel/                     # Safety Sentinel (block listener)
+│   ├── scorer/                       # Yield Brain (periodic scorer)
+│   └── advisor/                      # Weekly Advisor (Claude API reports)
 │
-├── scripts/                          # Deployment & utility scripts
-│   ├── deploy.js                     # Full protocol deployment script
-│   ├── verify.js                     # Contract verification on Polkadot Hub
-│   └── seed.js                       # Seed test yield sources for dev/testnet
+├── client/                           # Frontend (React + Vite)
+│   └── src/
+│       ├── pages/                    # Dashboard, Vault, Analytics, Faucet
+│       ├── components/               # UI components + layout
+│       ├── hooks/                    # useVault, useGuard, useOracle, useEvents
+│       └── config/                   # Chain + contract config
 │
-├── test/                             # Test suite
-│   ├── AegisVault.test.js            # Core vault deposit/withdraw/rebalance tests
-│   ├── AegisGuard.test.js            # Sentinel + emergency trigger tests
-│   ├── YieldOracle.test.js           # Oracle read/write + score validation
-│   └── helpers/
-│       └── fixtures.js               # Shared test setup & mock data
+├── scripts/
+│   ├── deploy-polkadot.js            # Full deployment script
+│   └── seed.js                       # Seed test yield sources
 │
-├── .env.example                      # Required environment variables (template)
-├── hardhat.config.js                 # Hardhat config (Polkadot Hub network)
-├── package.json
-└── README.md
+└── test/                             # Hardhat test suite (53 tests)
 ```
 
 ---
 
 ## 📜 Smart Contracts
 
-| Contract | Purpose |
-|---|---|
-| `AegisVault.sol` | Core vault. Accepts USDC deposits, routes to yield sources, handles withdrawals and AI-triggered rebalances |
-| `AegisGuard.sol` | Monitors anomaly signals. When ≥2 breach threshold, triggers emergency withdrawal to AegisTreasury |
-| `AegisTreasury.sol` | Safe harbor. Holds funds during and after an emergency event until user claims |
-| `YieldOracle.sol` | Stores Yield Quality Scores written by the off-chain Yield Brain. Readable by the Vault |
-| `RiskMath.sol` | Library for anomaly math — TVL drainage rates, deviation thresholds, flash loan signal scoring |
-| `YieldScorer.sol` | Library with helpers for blending real yield vs emissions yield into a 0–100 score |
+| Contract | Address (Paseo Hub) | Purpose |
+|---|---|---|
+| `AegisVault.sol` | `0x5ef526DFe9474E66c439Ca8FF31526f755F7aaBd` | Core vault — deposits, withdrawals, rebalancing |
+| `AegisGuard.sol` | `0x0F5FAd045798b5BC1Eada8650D09fEE05D4090c5` | Signal monitoring and emergency execution |
+| `AegisTreasury.sol` | `0x95c02D478522b1B7616f433A22B7CDcBa259CA50` | Safe harbor for emergency-withdrawn funds |
+| `YieldOracle.sol` | `0xC7c40108FA72A9C696a277B3496025AefeBc33b6` | On-chain yield quality scores from AI |
+| `MockUSDC.sol` | `0x3A5786F2CB62a8002544DA58F70eb23F17fdEFC5` | Testnet USDC (mintable) |
 
 ---
 
 ## 🤖 AI Stack
 
-| Service | Runtime | Trigger | Output |
-|---|---|---|---|
-| **Yield Brain** | Node.js | Every 10 minutes | Writes Yield Quality Score on-chain via `YieldOracle.sol` |
-| **Safety Sentinel** | Node.js | Every new block (~2s) | Calls `AegisGuard.triggerEmergency()` if threshold breached |
-| **Weekly Advisor** | Node.js | Cron — every Sunday | Writes plain-English report to `UserReports` mapping in vault |
+| Service | Trigger | Output |
+|---|---|---|
+| **Scorer** | Every 10 minutes | Writes Yield Quality Score on-chain to `YieldOracle.sol` |
+| **Sentinel** | Every block (~2s) | Calls `AegisGuard.checkAndExecute()` if thresholds breach |
+| **Advisor** | Weekly cron (Sunday) | Plain-English report per user via Claude API |
 
-AI inference is powered by the **Anthropic Claude API** (`claude-sonnet-4-6`). Each service makes structured API calls and either writes results on-chain or serves them to the frontend.
+All AI inference uses **Anthropic Claude** (`claude-sonnet-4-6`).
 
 ---
 
@@ -225,15 +194,17 @@ AI inference is powered by the **Anthropic Claude API** (`claude-sonnet-4-6`). E
 ### Prerequisites
 
 - Node.js `>= 18.x`
-- npm or yarn
-- A funded wallet on Polkadot Hub Testnet (Westend Asset Hub)
+- MetaMask with Paseo Asset Hub added
 - Anthropic API key (for AI services)
 
 ### Install
 
 ```bash
 git clone https://github.com/your-org/aegis.git
-cd aegis
+cd aegis/contracts
+npm install
+
+cd ../client
 npm install
 ```
 
@@ -243,71 +214,68 @@ npm install
 cp .env.example .env
 ```
 
-Fill in your `.env`:
+Key variables:
 
 ```env
-# Network
-POLKADOT_HUB_RPC_URL=https://westend-asset-hub-eth-rpc.polkadot.io
-PRIVATE_KEY=your_deployer_wallet_private_key
-
-# Contracts (populated after deploy)
-AEGIS_VAULT_ADDRESS=
-AEGIS_GUARD_ADDRESS=
-AEGIS_TREASURY_ADDRESS=
-YIELD_ORACLE_ADDRESS=
-
-# AI Services
+POLKADOT_HUB_RPC_URL=https://services.polkadothub-rpc.com/testnet
+POLKADOT_HUB_PRIVATE_KEY=your_deployer_private_key
 ANTHROPIC_API_KEY=your_anthropic_api_key
+```
 
-# Gasless (0xGasless)
-GASLESS_API_KEY=your_0xgasless_api_key
+### Run Frontend
+
+```bash
+cd client
+npm run dev
+# Open http://localhost:5173
+```
+
+### Run AI Services
+
+```bash
+cd contracts
+npm run sentinel   # Start Safety Sentinel
+npm run scorer     # Start Yield Brain
+npm run advisor    # Start Weekly Advisor
 ```
 
 ---
 
 ## 🔧 Deployment
 
+Contracts are already deployed on Paseo Hub testnet. To redeploy:
+
 ```bash
-# Deploy all contracts to Polkadot Hub Testnet
-npx hardhat run scripts/deploy.js --network polkadot-hub-testnet
-
-# Verify contracts
-npx hardhat run scripts/verify.js --network polkadot-hub-testnet
-
-# Seed test yield sources (dev only)
-npx hardhat run scripts/seed.js --network polkadot-hub-testnet
+cd contracts
+npm run deploy:polkadot
 ```
+
+The script compiles with `resolc` (PVM bytecode), deploys all 5 contracts in sequence, wires them together, and saves addresses to `deployments/polkadotHub.json`.
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-# Run full test suite
-npx hardhat test
-
-# Run with gas report
-REPORT_GAS=true npx hardhat test
-
-# Run a single test file
-npx hardhat test test/AegisGuard.test.js
+cd contracts
+npm test               # Run all 53 tests
+REPORT_GAS=true npm test  # With gas report
 ```
 
 ---
 
-## ⚡ Polkadot Hub Advantages
+## ⚡ Why Polkadot Hub
 
-Aegis is not an Ethereum port. It is built specifically for Polkadot Hub and its properties are essential to the product:
+Aegis is built specifically for Polkadot Hub, not ported from another chain. Several design decisions only work here:
 
-| Feature | Polkadot Hub | Ethereum |
+| Property | Polkadot Hub | Why It Matters for Aegis |
 |---|---|---|
-| Block time | **~2 seconds** | ~12 seconds |
-| Emergency response window | **4 seconds** | 24+ seconds |
-| Gas fees | **Negligible** | $5–50 per tx |
-| Gasless infrastructure | **Native (0xGasless)** | Complex workarounds |
-| EVM compatibility | **Full (PolkaVM)** | Native |
+| Block time | ~2 seconds | Sentinel can respond within 4 seconds of detecting a signal |
+| Gas fees | Negligible | Sentinel can submit transactions every block affordably |
+| EVM compatibility | Full (PolkaVM) | Standard Solidity tooling works without modification |
+| Finality | Fast, deterministic | Emergency withdrawals confirm quickly and reliably |
 
-The Safety Sentinel is **only viable** at Polkadot Hub's block speed. At Ethereum's 12-second block times, most exploits are fully executed before 3 blocks confirm an anomaly. Aegis makes real-time protection structurally possible.
+The Sentinel's real-time response model depends entirely on fast, cheap blocks. It is not practical on chains where a transaction costs $10–50 and confirms every 12 seconds.
 
 ---
 
@@ -315,34 +283,28 @@ The Safety Sentinel is **only viable** at Polkadot Hub's block speed. At Ethereu
 
 | Phase | Target | Milestone |
 |---|---|---|
-| **Phase 1** | March 2026 | Hackathon MVP — vault + sentinel + yield brain |
-| **Phase 2** | Q2 2026 | Bifrost vDOT integration as yield source |
+| **Phase 1** | March 2026 | Hackathon MVP — vault + sentinel + yield brain on Paseo Hub |
+| **Phase 2** | Q2 2026 | Bifrost vDOT integration as first live yield source |
 | **Phase 3** | Q2 2026 | Multi-asset support (DOT, ETH via Snowbridge) |
-| **Phase 4** | Q3 2026 | DAO governance for sentinel thresholds |
+| **Phase 4** | Q3 2026 | DAO governance for sentinel signal thresholds |
 | **Phase 5** | Q4 2026 | Polkadot Treasury grant + audit via Polkadot Assurance Legion |
 
 ---
 
 ## 👥 Team
 
-| Name | Role |
-|---|---|
-| — | Smart Contract Engineer |
-| — | AI / Backend Engineer |
-| — | Frontend Engineer |
+Built for the **Polkadot Solidity Hackathon 2026**, organized by OpenGuild × Web3 Foundation × Polkadot.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
 <div align="center">
 
-Built with ❤️ for the **Polkadot Solidity Hackathon 2026**
-
-Organized by [OpenGuild](https://openguild.wtf) × [Web3 Foundation](https://web3.foundation) × [Polkadot](https://polkadot.network)
+🛡️ **Aegis** — Your savings, watched over.
 
 </div>

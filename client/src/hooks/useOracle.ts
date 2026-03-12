@@ -27,7 +27,7 @@ export function useOracle(sourceAddresses: string[]) {
 
   const refresh = useCallback(async () => {
     if (sourceAddresses.length === 0) return;
-    setLoading(true);
+    setLoading(Object.keys(scores).length === 0);
     setError(undefined);
     try {
       const entries = await Promise.all(

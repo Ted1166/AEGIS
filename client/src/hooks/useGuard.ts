@@ -43,7 +43,7 @@ export function useGuard(
 
   const refresh = useCallback(async () => {
     if (sources.length === 0) return;
-    setLoading(true);
+    setLoading(protocols.length === 0);
     setError(undefined);
     try {
       const [block, results] = await Promise.all([

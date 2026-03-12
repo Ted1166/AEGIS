@@ -43,7 +43,7 @@ export function useVault(address?: string, signer?: ethers.JsonRpcSigner) {
   const usdc  = new ethers.Contract(ADDRESSES.usdc,  USDC_ABI,  readProvider);
 
   const refresh = useCallback(async () => {
-    setState(s => ({ ...s, loading: true, error: undefined }));
+    setState(s => ({ ...s, loading: s.sources.length === 0, error: undefined }));
     try {
       const [totalAssets, totalShares, sourceAddresses] = await Promise.all([
         vault.totalAssets(),

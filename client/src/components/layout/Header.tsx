@@ -34,7 +34,7 @@ export function Header({
       background: 'rgba(10, 11, 13, 0.92)', backdropFilter: 'blur(12px)',
       borderBottom: '1px solid var(--border)',
       padding: '0 24px', height: '56px',
-      display: 'flex', alignItems: 'center', gap: '32px',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     }}>
       {/* Logo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
@@ -79,7 +79,7 @@ export function Header({
       </div>
 
       {/* Nav */}
-      <nav style={{ display: 'flex', gap: '2px', flex: 1 }}>
+      <nav style={{ display: 'flex', gap: '2px' }}>
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}

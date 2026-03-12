@@ -35,7 +35,7 @@ export function useEvents(address?: string) {
   const [loading, setLoading] = useState(false);
 
   const fetch = useCallback(async () => {
-    setLoading(true);
+    setLoading(allEvents.length === 0);
     try {
       const currentBlock = await readProvider.getBlockNumber();
       const fromBlock    = Math.max(0, currentBlock - 50_000);
