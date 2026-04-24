@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="200" height="220">
+  <defs>
+    <!-- Core glow green -->
+    <radialGradient id="coreGlow" cx="50%" cy="48%" r="35%">
+      <stop offset="0%"   stop-color="#00ff87" stop-opacity="0.9"/>
+      <stop offset="60%"  stop-color="#00c96a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#00ff87" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Shield face gradient -->
+    <linearGradient id="shieldFace" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%"   stop-color="#1a2035"/>
+      <stop offset="100%" stop-color="#0a0d14"/>
+    </linearGradient>
+
+    <!-- Shield edge gradient -->
+    <linearGradient id="shieldEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#2a3a50"/>
+      <stop offset="50%"  stop-color="#00ff87"/>
+      <stop offset="100%" stop-color="#1a2a3a"/>
+    </linearGradient>
+
+    <!-- Segment highlight -->
+    <linearGradient id="segTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-20%" y="-10%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#00ff87" flood-opacity="0.15"/>
+    </filter>
+
+    <!-- Green glow filter -->
+    <filter id="greenGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Pulse animation filter -->
+    <filter id="pulseGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Clip to shield shape -->
+    <clipPath id="shieldClip">
+      <path d="M100 12 L178 42 L178 108 Q178 162 100 208 Q22 162 22 108 L22 42 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── Outer shield drop shadow layer ─────────────────────────── -->
+  <path
+    d="M100 12 L178 42 L178 108 Q178 162 100 208 Q22 162 22 108 L22 42 Z"
+    fill="none"
+    stroke="#00ff87"
+    stroke-width="0.5"
+    stroke-opacity="0.2"
+    filter="url(#shadow)"
+  />
+
+  <!-- ── Shield base ─────────────────────────────────────────────── -->
+  <path
+    d="M100 12 L178 42 L178 108 Q178 162 100 208 Q22 162 22 108 L22 42 Z"
+    fill="url(#shieldFace)"
+  />
+
+  <!-- ── Hexagonal segment grid (clipped to shield) ─────────────── -->
+  <g clip-path="url(#shieldClip)" opacity="0.6">
+    <!-- Row 1 top segments -->
+    <polygon points="100,18 118,28 118,48 100,58 82,48 82,28" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="118,28 136,38 136,58 118,68 100,58 100,38" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="82,28  100,18 100,38  82,48  64,38  64,18" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="136,38 154,48 154,68 136,78 118,68 118,48" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="64,18  82,28  82,48  64,58  46,48  46,28" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+
+    <!-- Row 2 -->
+    <polygon points="100,58 118,68 118,88 100,98 82,88 82,68"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="118,68 136,78 136,98 118,108 100,98 100,78" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="82,68  100,58 100,78  82,88  64,78  64,58"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="136,78 154,88 154,108 136,118 118,108 118,88" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="64,58  82,68  82,88  64,98  46,88  46,68"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+
+    <!-- Row 3 -->
+    <polygon points="100,98 118,108 118,128 100,138 82,128 82,108"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="118,108 136,118 136,138 118,148 100,138 100,118" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="82,108 100,98 100,118  82,128  64,118  64,98"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="136,118 154,128 154,148 136,158 118,148 118,128" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="64,98  82,108  82,128  64,138  46,128  46,108"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+
+    <!-- Row 4 -->
+    <polygon points="100,138 118,148 118,168 100,178 82,168 82,148"  fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="82,148  100,138 100,158  82,168  64,158  64,138" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+    <polygon points="118,148 136,158 136,178 118,188 100,178 100,158" fill="none" stroke="#1e2d44" stroke-width="0.8"/>
+  </g>
+
+  <!-- ── Subtle face highlight ───────────────────────────────────── -->
+  <path
+    d="M100 12 L178 42 L178 108 Q178 162 100 208 Q22 162 22 108 L22 42 Z"
+    fill="url(#segTop)"
+  />
+
+  <!-- ── Circuit trace lines ─────────────────────────────────────── -->
+  <g clip-path="url(#shieldClip)" filter="url(#greenGlow)">
+    <!-- Horizontal traces -->
+    <line x1="55" y1="80"  x2="145" y2="80"  stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.25"/>
+    <line x1="45" y1="110" x2="155" y2="110" stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.25"/>
+    <line x1="55" y1="140" x2="145" y2="140" stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.25"/>
+    <!-- Vertical traces -->
+    <line x1="100" y1="20" x2="100" y2="195" stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.2"/>
+    <line x1="70"  y1="35" x2="70"  y2="175" stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.15"/>
+    <line x1="130" y1="35" x2="130" y2="175" stroke="#00ff87" stroke-width="0.6" stroke-opacity="0.15"/>
+    <!-- Connector dots -->
+    <circle cx="70"  cy="80"  r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="100" cy="80"  r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="130" cy="80"  r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="70"  cy="110" r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="130" cy="110" r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="70"  cy="140" r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="100" cy="140" r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+    <circle cx="130" cy="140" r="1.5" fill="#00ff87" fill-opacity="0.5"/>
+  </g>
+
+  <!-- ── Core energy orb ─────────────────────────────────────────── -->
+  <circle cx="100" cy="108" r="28" fill="url(#coreGlow)" filter="url(#pulseGlow)">
+    <animate attributeName="r" values="26;30;26" dur="2.8s" repeatCount="indefinite" calcMode="ease"/>
+    <animate attributeName="opacity" values="0.85;1;0.85" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- ── A letterform — geometric, bold ─────────────────────────── -->
+  <g filter="url(#greenGlow)">
+    <!-- Left stroke of A -->
+    <line x1="86" y1="126" x2="96" y2="92" stroke="#00ff87" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Right stroke of A -->
+    <line x1="114" y1="126" x2="104" y2="92" stroke="#00ff87" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Crossbar of A -->
+    <line x1="89.5" y1="113" x2="110.5" y2="113" stroke="#00ff87" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Cap dot above A -->
+    <circle cx="100" cy="87" r="3" fill="#00ff87">
+      <animate attributeName="opacity" values="1;0.4;1" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- ── Shield outer border ────────────────────────────────────── -->
+  <path
+    d="M100 12 L178 42 L178 108 Q178 162 100 208 Q22 162 22 108 L22 42 Z"
+    fill="none"
+    stroke="url(#shieldEdge)"
+    stroke-width="2"
+  />
+
+  <!-- ── Top edge highlight ─────────────────────────────────────── -->
+  <path
+    d="M100 12 L178 42"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="1"
+    stroke-opacity="0.12"
+    stroke-linecap="round"
+  />
+  <path
+    d="M100 12 L22 42"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="1"
+    stroke-opacity="0.08"
+    stroke-linecap="round"
+  />
+
+  <!-- ── Corner accent marks ────────────────────────────────────── -->
+  <g stroke="#00ff87" stroke-width="1.5" stroke-opacity="0.6" stroke-linecap="round">
+    <!-- Top right corner tick -->
+    <line x1="168" y1="45" x2="175" y2="48"/>
+    <line x1="175" y1="48" x2="175" y2="56"/>
+    <!-- Top left corner tick -->
+    <line x1="32"  y1="45" x2="25"  y2="48"/>
+    <line x1="25"  y1="48" x2="25"  y2="56"/>
+    <!-- Bottom tip accent -->
+    <line x1="95"  y1="205" x2="100" y2="210"/>
+    <line x1="105" y1="205" x2="100" y2="210"/>
+  </g>
+
+  <!-- ── Animated scan line ─────────────────────────────────────── -->
+  <rect
+    x="22" y="0" width="156" height="2"
+    fill="url(#coreGlow)"
+    opacity="0.35"
+    clip-path="url(#shieldClip)"
+  >
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="0,15; 0,190; 0,15"
+      dur="3.5s"
+      repeatCount="indefinite"
+      calcMode="ease-in-out"
+    />
+    <animate attributeName="opacity" values="0;0.35;0" dur="3.5s" repeatCount="indefinite"/>
+  </rect>
+</svg>

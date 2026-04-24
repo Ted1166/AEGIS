@@ -1,0 +1,13 @@
+{
+  "network": "http://localhost:8545",
+  "chainId": "2559569424467142",
+  "deployer": "0x953F231956adc68b525524f3Ab44e1794386D890",
+  "usdc": "0x4205DEBc42B91c7B13983C42B6808fC9F559d94b",
+  "treasury": "0xc08757f4dA6b13e6Fa0d343F227fB751FC220e9b",
+  "oracle": "0xb5b844ba8f544406d53fF7C7e0B43c008f8D16CF",
+  "guard": "0x205aE7eF827e92f9daB6B35CD84301A780C75C08",
+  "vault": "0x3C1b5aa1C2b914bDBfe3313cc2e2B3c850F94AFe",
+  "deployedAt": "2026-04-20T00:00:00.000Z",
+  "lendingSource": "0xEe897D9C57f55b8ddFf96a5175C26c01be86D8Eb",
+  "dexSource": "0x62d63B2Ea8A02B8a54A40BB300B23b4B7FD32E40"
+}

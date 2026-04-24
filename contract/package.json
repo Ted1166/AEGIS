@@ -1,0 +1,29 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "Aegis — AI-Guarded Stablecoin Vault on Polkadot Hub",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "sentinel": "node ai/sentinel/index.js",
+    "scorer": "node ai/scorer/index.js",
+    "advisor": "node ai/advisor/index.js",
+    "deploy:initia": "node scripts/deploy-initia.js",
+    "seed:initia": "node scripts/seed-initia.js",
+    "authorize": "node scripts/authorize.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1",
+    "@parity/resolc": "^0.6.0",
+    "dotenv": "^17.3.1",
+    "ethers": "^6.16.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.3",
+    "@types/node": "^22.0.0",
+    "hardhat": "^3.1.10",
+    "typescript": "^5.9.3"
+  }
+}

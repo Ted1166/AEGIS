@@ -1,0 +1,33 @@
+{
+  "history": [
+    {
+      "user": "0x953F231956adc68b525524f3Ab44e1794386D890",
+      "reportDate": "2026-04-20",
+      "period": "2026-04-13 → 2026-04-20",
+      "balance": "9999.00",
+      "earned": "0.00",
+      "summary": "Your vault had a quiet but active week — a deposit came in and the AI made a smart rebalancing move to keep your savings working efficiently. Your balance is holding steady at $9,999.00 USDC with no withdrawals or emergencies. Everything looks healthy under the hood.",
+      "earnedText": "You earned $0.00 USDC in interest this week — this is likely because your deposit and rebalance happened mid-week, so full earnings haven't had time to accumulate yet. Expect yield to start flowing more visibly in the coming days.",
+      "movements": "The AI triggered one rebalance this week as part of its routine check on yield quality. It adjusted how your funds are split between the two savings sources based on their current scores — shifting weight toward more reliable, sustainable returns rather than chasing the flashiest numbers.",
+      "outlook": "Your two active yield sources have notably different risk profiles right now — the Lending option is steady and sustainable, while the DEX LP carries more uncertainty with a mixed score of 51/100 and most of its 22% APY coming from token emissions rather than real activity. Over the next 7 days, keep an eye on the DEX LP; emission-heavy yields can shrink quickly if token incentives cool off.",
+      "alerts": [],
+      "tip": "Notice that the DEX LP advertises 22% APY, but only 6.60% of that comes from real trading activity — the rest is token rewards that can disappear overnight. The AI is already factoring this in, but it's a great reminder that a smaller, sturdier yield is often worth more than a big flashy one.",
+      "generatedAt": 1776679687695,
+      "sources": [
+        {
+          "name": "Aegis Mock Lending",
+          "score": 72,
+          "tier": "Sustainable",
+          "apy": "8.00%"
+        },
+        {
+          "name": "Aegis Mock DEX LP",
+          "score": 51,
+          "tier": "Mixed",
+          "apy": "22.00%"
+        }
+      ],
+      "balanceRaw": "9999000000"
+    }
+  ]
+}

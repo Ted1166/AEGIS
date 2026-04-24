@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-base: #0a0b0d;
+  --bg-surface: #0f1114;
+  --bg-elevated: #151820;
+  --bg-card: #13161b;
+  --border: #1e2330;
+  --border-bright: #2a3040;
+
+  --text-primary: #e8eaf0;
+  --text-secondary: #7a8299;
+  --text-dim: #3d4459;
+
+  --green: #00ff87;
+  --green-dim: #00ff8720;
+  --green-mid: #00c96a;
+  --amber: #ffb800;
+  --amber-dim: #ffb80018;
+  --red: #ff3d57;
+  --red-dim: #ff3d5718;
+  --blue: #4d9fff;
+  --blue-dim: #4d9fff18;
+
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --radius: 4px;
+  --radius-lg: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+/* Animations */
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--green-dim); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px transparent; }
+}
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-in {
+  animation: fade-in 0.3s ease forwards;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+input, textarea {
+  font-family: var(--font-mono);
+}

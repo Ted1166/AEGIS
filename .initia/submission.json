@@ -1,0 +1,12 @@
+{
+  "project_name": "Aegis",
+  "repo_url": "https://github.com/Ted1166/aegis",
+  "commit_sha": "",
+  "rollup_chain_id": "aegis-1",
+  "deployed_address": "0x3C1b5aa1C2b914bDBfe3313cc2e2B3c850F94AFe",
+  "vm": "evm",
+  "native_feature": "interwoven-bridge",
+  "core_logic_path": "contract/contracts/AegisVault.sol",
+  "native_feature_frontend_path": "client/src/config/chain.ts",
+  "demo_video_url": "https://www.youtube.com/watch?v=Iu--lKkR3k0&feature=youtu.be"
+}
