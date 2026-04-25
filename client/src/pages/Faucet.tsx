@@ -165,7 +165,7 @@ export function Faucet({ address, signer, onConnect }: FaucetProps) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
           {[
             { label: 'Network Name',    value: 'Aegis-1 (Initia)' },
-            { label: 'RPC URL',         value: 'http://localhost:8545' },
+            { label: 'RPC URL',         value: 'https://defiant-spout-breeches.ngrok-free.dev' },
             { label: 'Chain ID',        value: '2559569424467142' },
             { label: 'Currency Symbol', value: 'GAS' },
             { label: 'Block Explorer',  value: 'scan.testnet.initia.xyz/custom-network' },
