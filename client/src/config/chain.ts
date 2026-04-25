@@ -1,5 +1,7 @@
 import { defineChain } from 'viem';
 
+const NGROK_URL = 'https://defiant-spout-breeches.ngrok-free.dev';
+
 export const aegisChain = defineChain({
   id: 2559569424467142,
   name: 'Aegis-1 (Initia)',
@@ -10,7 +12,7 @@ export const aegisChain = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['http://localhost:8545'],
+      http: [NGROK_URL],
     },
   },
   blockExplorers: {
@@ -22,9 +24,9 @@ export const aegisChain = defineChain({
   testnet: true,
 });
 
-export const CHAIN_ID = 0x917ea3252c4c6;
+export const CHAIN_ID = 2559569424467142;
 
-export const RPC_URL = 'http://localhost:8545';
+export const RPC_URL = NGROK_URL;
 
 export const EXPLORER_URL = 'https://scan.testnet.initia.xyz/initiation-2';
 
